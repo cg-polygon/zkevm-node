@@ -57,17 +57,17 @@ func (w *Worker) AddTxTracker(ctx context.Context, tx *TxTracker) (dropTx bool) 
 		root, err := w.state.GetLastStateRoot(ctx, nil)
 		if err != nil {
 			log.Errorf("AddTx GetLastStateRoot error: %v", err)
-			return
+			return false
 		}
 		nonce, err := w.state.GetNonceByStateRoot(ctx, tx.From, root)
 		if err != nil {
 			log.Errorf("AddTx GetNonceByStateRoot error: %v", err)
-			return
+			return false
 		}
 		balance, err := w.state.GetBalanceByStateRoot(ctx, tx.From, root)
 		if err != nil {
 			log.Errorf("AddTx GetBalanceByStateRoot error: %v", err)
-			return
+			return false
 		}
 
 		addr = newAddrQueue(tx.From, nonce.Uint64(), balance)
